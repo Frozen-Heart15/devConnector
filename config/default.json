@@ -1,5 +1,7 @@
 {
     "mongoURI":"mongodb+srv://gaurav:gaurav123@cluster0.hw0km.mongodb.net/devDB?retryWrites=true&w=majority",
-    "jwtSecret": "myscrettoken"
+    "jwtSecret": "myscrettoken",
+    "githubClientId":"ae6f93e575d2172d3311",
+    "githubSecret":"917c32f8ab986a818ae9b5a24b85f6bcb3f955e6"
 
 }
