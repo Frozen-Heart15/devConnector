@@ -1,8 +1,11 @@
 import React, {Fragment, useState} from 'react'
-import axios from 'axios';
-import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {Link, Redirect} from 'react-router-dom';
+import {login} from '../actions/auth';
+import {setAlert} from '../actions/alert';
+import PropTypes from 'prop-types';
 
-export const Login = () => {
+ const Login = ({setAlert,login, isAuthenticated}) => {
 
     const [formData, setFormData] = useState({
         email:'',
@@ -14,8 +17,13 @@ export const Login = () => {
         setFormData({...formData, [e.target.name]:e.target.value})
     }  
     const onSubmit = async e =>{
-        e.preventDefaults();
-        console.log(formData);
+        e.preventDefault();
+        login(email,password);
+    }
+
+    //Redirect if logged in
+    if(isAuthenticated){
+      return <Redirect to="dashboard"/>
     }
 
     return (
@@ -28,7 +36,7 @@ export const Login = () => {
           <input type="email" placeholder="Email Address" name="email"
           value={email}
            onChange={e=>onChange(e)}
-           required />
+           />
           
         </div>
         <div className="form-group">
@@ -36,7 +44,6 @@ export const Login = () => {
             type="password"
             placeholder="Password"
             name="password"
-            minLength="6"
             value={password}
             onChange={e=>onChange(e)}
           />
@@ -50,3 +57,19 @@ export const Login = () => {
         </Fragment>
     )
 }
+
+Login.propTypes = {
+  setAlert:PropTypes.func.isRequired,
+  login:PropTypes.func.isRequired,
+  isAuthenticated:PropTypes.bool
+}
+
+const mapStateToProps = state => ({
+isAuthenticated: state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps,
+  {
+    setAlert,
+    login
+  })(Login);
